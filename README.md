@@ -27,7 +27,7 @@ var AnchorTo=function(sides, target){
 
   if((typeof sides)=='string')sides=[sides];
   //if sides is array with more than one item, then use first unless space is limited...
-
+  //currently the first is always used...
 	return function(){
 
 		var me=this;
