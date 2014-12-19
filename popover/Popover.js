@@ -113,6 +113,16 @@ var Popover = (function(){
 			me._addCleanupEvents();
 
 		},
+		//returns that html element that this tip for. 
+		getTargetElement:function(){
+			var me=this;
+			return me.element;
+		},
+		//returns this tip element
+		getTipElement:function(){
+			var me=this;
+			return me.tip;
+		},
 
 		_attachWaiAria: function(){
 			var id = this.options.id;
@@ -232,6 +242,7 @@ var Popover = (function(){
 		_position: function(event){
 
 			var me=this;
+			
 			if(me.options.anchor){
 
 				if(me.options.movableTarget){
@@ -240,25 +251,25 @@ var Popover = (function(){
 				return;
 			}
 
-			if (!this.tip) document.id(this);
+			if (!me.tip) me._getTipEl();
 
 			var size = window.getSize(), scroll = window.getScroll(),
-			tip = {x: this.tip.offsetWidth, y: this.tip.offsetHeight},
+			tip = {x: me.tip.offsetWidth, y: me.tip.offsetHeight},
 			props = {x: 'left', y: 'top'},
 			bounds = {y: false, x2: false, y2: false, x: false},
 			obj = {};
 
 			for (var z in props){
-				obj[props[z]] = event.page[z] + this.options.offset[z];
+				obj[props[z]] = event.page[z] + me.options.offset[z];
 				if (obj[props[z]] < 0) bounds[z] = true;
-				if ((obj[props[z]] + tip[z] - scroll[z]) > size[z] - this.options.windowPadding[z]){
-					obj[props[z]] = event.page[z] - this.options.offset[z] - tip[z];
+				if ((obj[props[z]] + tip[z] - scroll[z]) > size[z] - me.options.windowPadding[z]){
+					obj[props[z]] = event.page[z] - me.options.offset[z] - tip[z];
 					bounds[z+'2'] = true;
 				}
 			}
 
-			this.fireEvent('bound', bounds);
-			this.tip.setStyles(obj);
+			me.fireEvent('bound', bounds);
+			me.tip.setStyles(obj);
 		},
 
 		_fill: function(element, contents){
@@ -266,16 +277,10 @@ var Popover = (function(){
 			else element.adopt(contents);
 		},
 
-		//	show: function(element){
-		//		if (!this.tip) document.id(this);
-		//		if (!this.tip.getParent()) this.tip.inject(document.body);
-		//		this.fireEvent('show', [this.tip, element]);
-		//		return me;
-		//	},
-
 		_hide: function(element){
-			if (!this.tip) document.id(this);
-			this.fireEvent('hide', [this.tip, element]);
+			var me=this;
+			if (!me.tip) me._getTipEl();
+			me.fireEvent('hide', [me.tip, element]);
 		},
 
 
@@ -304,19 +309,19 @@ var Popover = (function(){
 		},
 
 		_show:function(element){
-
-			this.container.empty();
+			var me=this;
+			me.container.empty();
 			['title', 'text'].each(function(value){
 				var content = element.retrieve('tip:' + value);
-				var div = this['_' + value + 'Element'] = new Element('div', {
+				var div = me['_' + value + 'Element'] = new Element('div', {
 					'class': 'tip-' + value
-				}).inject(this.container);
-				if (content) this._fill(div, content);
-			}, this);
+				}).inject(me.container);
+				if (content) me._fill(div, content);
+			});
 
-			if (!this.tip) document.id(this);
-			if (!this.tip.getParent()) this._inject();
-			this.fireEvent('show', [this.tip, element]);
+			if (!me.tip) me._getTipEl();
+			if (!me.tip.getParent()) me._inject();
+			me.fireEvent('show', [me.tip, element]);
 
 		},
 
@@ -387,7 +392,7 @@ var Popover = (function(){
 
 		},
 
-		toElement: function(){
+		_getTipEl: function(){
 			if (this.tip) return this.tip;
 
 			this.tip = new Element('div', {
