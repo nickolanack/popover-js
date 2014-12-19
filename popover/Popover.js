@@ -20,6 +20,10 @@ var Popover = (function(){
 			me.element=e;
 
 			me.options=Object.append({
+				
+				//content:htmlEl, if set, title and description are ignored.
+				//title:'',
+				//description:''
 
 				/*
 				 * optional css id to apply to root element
