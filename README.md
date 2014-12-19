@@ -3,20 +3,25 @@ popover-js
 
 Mootools html hover popovers with features
 
-
+```js
 new Popover(htmlEl);
+```
 
-
+```js
 (new Popover(htmlEl)).show()
+```
 
-
+```js
 var p=new Popover(htmlEl);
 p.setText('replace text');
 p.show();
+```
 
+```js
 var tip=new UIPopover(htmlEl, {anchor:AnchorTo(['bottom', 'top'])}); 
+```
 
-
+```js
 //Example anchor function to be passed as {anchor:AnchorTo('top')}
 var AnchorTo=function(sides, target){
 
@@ -56,3 +61,4 @@ var AnchorTo=function(sides, target){
 	};
 	
 };
+```
