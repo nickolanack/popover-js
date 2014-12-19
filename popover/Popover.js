@@ -2,7 +2,7 @@
  * 
  */
 
-var Popover = function(){
+var Popover = (function(){
 
 
 	var _current=null; //static private variable keeps track of currently active (most recent) Popover
@@ -444,4 +444,4 @@ var Popover = function(){
 
 	return Popover;
 
-};
+})();
