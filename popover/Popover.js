@@ -254,6 +254,10 @@ var Popover = (function(){
 				}
 				return;
 			}
+			
+			if(!event){
+				return;
+			}
 
 			if (!me.tip) me._getTipEl();
 
