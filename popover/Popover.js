@@ -323,18 +323,30 @@ var Popover = (function(){
 				var content = element.retrieve('tip:' + value);
 				var div = me['_' + value + 'Element'] = new Element('div', {
 					'class': 'tip-' + value
-				}).inject(me.container);
+				});
+				me.container.appendChild(div);
 				if (content) me._fill(div, content);
 			});
 
 			if (!me.tip) me._getTipEl();
-			if (!me.tip.getParent()) me._inject();
+			if (me.tip.getParent()!==me._insertElement()) me._inject();
 			me.fireEvent('show', [me.tip, element]);
 
 		},
-
+		_insertElement:function(){
+			return (
+				document.fullscreenElement||
+				document.webkitFullscreenElement||
+				document.mozFullscreenElement||
+				document.msFullscreenElement||
+				document.body
+			);
+		},
 		_inject:function(){
-			this.tip.inject(document.body);
+
+			//support popovers while in fullscreen mode
+			var me=this;
+			me._insertElement().appendChild(this.tip);
 		},
 
 		_eventEnter: function(event, element){
